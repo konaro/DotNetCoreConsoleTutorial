@@ -1,12 +1,25 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetCoreConsoleTutorial
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var services = new ServiceCollection();
+            // Register services to service collection
+            ConfigureServices(services);
+            var serviceProvider = services.BuildServiceProvider();
+        }
+
+        /// <summary>
+        /// Register services
+        /// </summary>
+        /// <param name="services">Service collection</param>
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IService, Service>();
+            services.AddSingleton<IRepository, Repository>();
         }
     }
 }
