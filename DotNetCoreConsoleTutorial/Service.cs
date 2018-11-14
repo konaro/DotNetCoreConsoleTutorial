@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotNetCoreConsoleTutorial
+﻿namespace DotNetCoreConsoleTutorial
 {
     public class Service : IService
     {

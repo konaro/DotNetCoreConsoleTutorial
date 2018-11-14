@@ -10,6 +10,11 @@ namespace DotNetCoreConsoleTutorial
             // Register services to service collection
             ConfigureServices(services);
             var serviceProvider = services.BuildServiceProvider();
+
+            // Get instance
+            var service = serviceProvider.GetRequiredService<IService>();
+
+            service.DoWork();
         }
 
         /// <summary>
