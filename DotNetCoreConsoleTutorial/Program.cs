@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using System.IO;
 
 namespace DotNetCoreConsoleTutorial
@@ -12,6 +14,12 @@ namespace DotNetCoreConsoleTutorial
             // Register services to service collection
             ConfigureServices(services);
             var serviceProvider = services.BuildServiceProvider();
+
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+            // Configure NLog
+            loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
+            NLog.LogManager.LoadConfiguration("nlog.config");
 
             // Get instance
             var service = serviceProvider.GetRequiredService<IService>();
@@ -32,6 +40,12 @@ namespace DotNetCoreConsoleTutorial
 
             // Register configuration
             services.AddSingleton(configuration);
+
+            // Register logger factory
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.AddLogging((builder) => builder.SetMinimumLevel(LogLevel.Information));
+
             services.AddSingleton<IService, Service>();
             services.AddSingleton<IRepository, Repository>();
         }

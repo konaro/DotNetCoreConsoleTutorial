@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace DotNetCoreConsoleTutorial
@@ -6,10 +7,12 @@ namespace DotNetCoreConsoleTutorial
     public class Repository : IRepository
     {
         private readonly IConfigurationRoot _configuration;
+        private readonly ILogger<Repository> _logger;
 
-        public Repository(IConfigurationRoot configuration)
+        public Repository(IConfigurationRoot configuration, ILogger<Repository> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public void DoWork()
@@ -19,6 +22,8 @@ namespace DotNetCoreConsoleTutorial
             var input = Console.ReadLine();
 
             Console.WriteLine($"Input value: {input}, Connection: {connection}");
+
+            _logger.LogInformation("Doing work...");
         }
     }
 }
